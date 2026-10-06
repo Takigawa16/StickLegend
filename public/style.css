@@ -1,0 +1,175 @@
+/* ===================================================================
+   Stickbound Legends — stylesheet
+   Sections: tokens & reset, layout shell, buttons & nav, cards & lists,
+             battle hud, modals, gacha overlay, loading screen,
+             adventure map, roster, responsive
+   =================================================================== */
+
+/* ---------- Design tokens + base reset ---------- */
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#e8f5ec;
+  --p:#fff;
+  --tx:#23303a;
+  --ac:#ff8a3d;
+  --bd:#cfe3d6;
+}
+html{
+  scroll-padding-top:env(safe-area-inset-top,0px);
+  height:100%;
+}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme=light]){
+    --bg:#141d22; --p:#1f2b32; --tx:#e8f0f2; --bd:#34464f;
+  }
+}
+:root[data-theme=dark]{
+  --bg:#141d22; --p:#1f2b32; --tx:#e8f0f2; --bd:#34464f;
+}
+*{ box-sizing:border-box; }
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--tx);
+  font:15px/1.4 "Trebuchet MS","Segoe UI",system-ui,sans-serif;
+}
+h2,h3{ margin:.2em 0; }
+small{ opacity:.85; }
+
+/* ---------- Page shell / layout ---------- */
+header{
+  display:flex; gap:10px; align-items:center; justify-content:space-between;
+  flex-wrap:wrap; padding:8px 12px;
+  background:var(--p); box-shadow:0 2px 8px #0002;
+}
+main{ padding:0 12px 20px; max-width:1100px; margin:auto; }
+.bt{ display:flex; gap:10px; }
+.cw{ flex:1; min-width:0; }
+aside{ width:210px; flex:none; }
+.lock{ opacity:.55; }
+
+/* Top status bar: base health, wave/chapter label, currency */
+.bh{
+  flex:1 1 160px; height:22px; background:#0003; border-radius:12px;
+  position:relative; overflow:hidden;
+}
+#bhb{
+  height:100%;
+  background:linear-gradient(90deg,#33d17a,#4fd8ff);
+  transition:width .2s;
+}
+#bht{
+  position:absolute; inset:0; text-align:center; font-size:12px;
+  line-height:22px; color:#fff; text-shadow:0 1px 2px #000;
+}
+#wv{ text-align:center; flex:1 1 140px; }
+#cur{ flex:1 1 200px; text-align:right; font-weight:700; font-size:13px; }
+
+/* ---------- Buttons + nav tabs ---------- */
+button{
+  font:inherit; font-weight:700; border:0; border-radius:12px;
+  padding:9px 14px; background:var(--ac); color:#fff; cursor:pointer;
+  box-shadow:0 3px 0 #0003; min-height:40px;
+}
+button:disabled{ opacity:.5; cursor:default; }
+button:focus-visible{ outline:3px solid #3d9bff; }
+
+nav{ display:flex; gap:6px; padding:8px 12px; overflow-x:auto; }
+nav button{ background:var(--p); color:var(--tx); flex:none; }
+nav button[aria-selected=true]{ background:var(--ac); color:#fff; }
+
+.row{
+  display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; align-items:center;
+}
+/* Skill / potion button in the battle action bar */
+.sb{ flex:1 1 110px; display:flex; flex-direction:column; align-items:center; }
+.sb small{ opacity:.9; }
+
+/* ---------- Cards, chips, lists ---------- */
+.card{
+  background:var(--p); border:2px solid var(--bd); border-radius:16px;
+  padding:10px 12px; box-shadow:0 3px 8px #0001; margin-bottom:10px;
+}
+.g{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+  gap:10px;
+}
+.chip{
+  display:inline-flex; align-items:center; gap:4px; border:3px solid;
+  border-radius:12px; padding:4px 8px; margin:3px; background:var(--p);
+}
+.bar{ height:10px; background:#0003; border-radius:6px; overflow:hidden; }
+.bar i{ display:block; height:100%; background:#e5533c; }
+.starRow{ letter-spacing:2px; color:#e89a00; }
+
+input{
+  font:inherit; width:100%; padding:10px; margin:4px 0; border-radius:10px;
+  border:2px solid var(--bd); background:var(--bg); color:var(--tx);
+}
+
+/* ---------- Battle canvas + hero mini-portraits ---------- */
+canvas{
+  width:100%; height:auto; border-radius:16px; box-shadow:0 4px 14px #0003;
+  display:block; background:#000;
+}
+.hc{ display:block; margin:4px auto; }
+
+/* ---------- Modal (level results, login, confirmations) ---------- */
+#ov{
+  position:fixed; inset:0; background:#000a; display:flex;
+  align-items:center; justify-content:center; z-index:9; padding:16px;
+}
+#ov[hidden]{ display:none; }
+.box{
+  background:var(--p); border-radius:20px; padding:20px; max-width:420px;
+  width:100%; text-align:center; max-height:90%; overflow:auto;
+}
+.box .row{ justify-content:center; }
+
+/* ---------- Gacha summon animation overlay ---------- */
+#gc{
+  position:fixed; inset:0; background:#05060d; z-index:20;
+  display:flex; align-items:center; justify-content:center;
+}
+#gc[hidden]{ display:none; }
+#gcv{
+  width:min(100vw,440px); height:100vh; object-fit:contain;
+  border-radius:0; box-shadow:none; background:#05060d;
+}
+#gk{
+  position:absolute; top:calc(env(safe-area-inset-top,0px) + 10px);
+  right:12px; background:#fff3;
+}
+
+/* ---------- Loading screen ---------- */
+#ld{
+  position:fixed; inset:0; background:#141d22; z-index:30;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:16px; color:#fff; transition:opacity .4s;
+}
+#ld .lg{ font-size:32px; font-weight:800; letter-spacing:1px; }
+#ld .bar{ width:min(70vw,320px); height:12px; }
+
+/* ---------- Adventure chapter / level map ---------- */
+.chGrid{
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr));
+  gap:8px;
+}
+.chCh{ border-radius:14px; padding:10px; text-align:left; color:#fff; min-height:70px; }
+.lvGrid{
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(90px,1fr));
+  gap:8px;
+}
+.lvBtn{
+  display:flex; flex-direction:column; align-items:center; gap:2px;
+  background:var(--p); color:var(--tx); border:2px solid var(--bd);
+}
+
+/* ---------- Responsive ---------- */
+@media(max-width:700px){
+  .bt{ flex-direction:column; }
+  aside{ width:auto; }
+}
